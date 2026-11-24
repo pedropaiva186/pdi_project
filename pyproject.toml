@@ -1,0 +1,16 @@
+[project]
+name = "pdi-project"
+version = "0.1.0"
+description = "Um projeto desenvolvido com o objetivo de desenvolver um sistema para execução de procedimentos de processamento digital de imagens, com a manipulação de imagens através da aplicação de máscaras e outros processos."
+authors = [
+    {name = "Your Name",email = "you@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
