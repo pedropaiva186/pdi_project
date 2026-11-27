@@ -1,0 +1,82 @@
+.app {
+  display: grid;
+  grid-template-areas:
+    'top top'
+    'side main';
+  grid-template-columns: 240px minmax(0, 1fr);
+  grid-template-rows: 56px minmax(0, 1fr);
+  height: 100vh;
+  background: var(--bg);
+}
+
+.topbar {
+  grid-area: top;
+  min-width: 0;
+}
+
+.sidebar {
+  grid-area: side;
+  min-height: 0;
+  overflow: hidden;
+  border-right: 1px solid var(--border);
+}
+
+.main {
+  grid-area: main;
+  min-height: 0;
+  padding: var(--space-4);
+  overflow-y: auto;
+}
+
+.workspace {
+  display: grid;
+  grid-template-areas:
+    'input output'
+    'params params'
+    'accessory accessory';
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-content: start;
+}
+
+.inputArea {
+  grid-area: input;
+  height: min(55vh, 560px);
+  min-height: 320px;
+}
+
+.outputArea {
+  grid-area: output;
+  height: min(55vh, 560px);
+  min-height: 320px;
+}
+
+.paramsArea {
+  grid-area: params;
+  min-width: 0;
+}
+
+.accessoryArea {
+  grid-area: accessory;
+  min-width: 0;
+}
+
+@media (max-width: 1024px) {
+  .app {
+    grid-template-columns: 200px minmax(0, 1fr);
+  }
+
+  .workspace {
+    grid-template-areas:
+      'input'
+      'output'
+      'params'
+      'accessory';
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .inputArea,
+  .outputArea {
+    height: min(45vh, 420px);
+  }
+}

@@ -1,0 +1,542 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "color",
+      "label": "Cor"
+    },
+    {
+      "id": "intensity",
+      "label": "Intensidade"
+    },
+    {
+      "id": "spatial",
+      "label": "Filtros espaciais"
+    },
+    {
+      "id": "frequency",
+      "label": "Filtros na frequência"
+    },
+    {
+      "id": "noise",
+      "label": "Ruído"
+    }
+  ],
+  "processes": [
+    {
+      "id": "rgb_split",
+      "label": "Decomposição RGB",
+      "category": "color",
+      "description": "Separa a imagem em três imagens em escala de cinza, uma por canal R, G e B.",
+      "modes": [
+        "rgb"
+      ],
+      "params": []
+    },
+    {
+      "id": "hsv_split",
+      "label": "Decomposição HSV",
+      "category": "color",
+      "description": "Converte para HSV e mostra os canais H, S e V como imagens em escala de cinza.",
+      "modes": [
+        "rgb"
+      ],
+      "params": []
+    },
+    {
+      "id": "threshold",
+      "label": "Limiarização",
+      "category": "intensity",
+      "description": "Pixels com intensidade acima do limiar k viram branco (255); os demais, preto (0).",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "k",
+          "label": "Limiar k",
+          "type": "int",
+          "min": 0,
+          "max": 255,
+          "step": 1,
+          "default": 128
+        }
+      ]
+    },
+    {
+      "id": "log_transform",
+      "label": "Transformação logarítmica",
+      "category": "intensity",
+      "description": "s = c · log(1 + r). Expande os tons escuros e comprime os claros.",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "c",
+          "label": "Ganho c",
+          "type": "float",
+          "min": 0.01,
+          "max": 100,
+          "step": 0.01,
+          "default": 45.99,
+          "help": "Com r em [0, 255], c = 255 / ln(256) ≈ 45,99 faz a saída ocupar exatamente [0, 255]."
+        }
+      ]
+    },
+    {
+      "id": "power_transform",
+      "label": "Transformação de potência (gama)",
+      "category": "intensity",
+      "description": "s = c · r^γ, com r normalizado em [0, 1]. γ < 1 clareia; γ > 1 escurece.",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "c",
+          "label": "Ganho c",
+          "type": "float",
+          "min": 0.01,
+          "max": 10,
+          "step": 0.01,
+          "default": 1.0
+        },
+        {
+          "id": "gamma",
+          "label": "Gama γ",
+          "type": "float",
+          "min": 0.01,
+          "max": 10,
+          "step": 0.01,
+          "default": 1.0
+        }
+      ]
+    },
+    {
+      "id": "histogram_equalization",
+      "label": "Equalização de histograma",
+      "category": "intensity",
+      "description": "Redistribui as intensidades usando a CDF. Mostra os histogramas antes e depois.",
+      "modes": [
+        "gray"
+      ],
+      "params": []
+    },
+    {
+      "id": "intensity_slicing",
+      "label": "Fatiamento por intensidade",
+      "category": "intensity",
+      "description": "Destaca (255) os pixels na faixa [A, B]. O fundo pode ser preservado ou zerado.",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "a",
+          "label": "Início da faixa A",
+          "type": "int",
+          "min": 0,
+          "max": 255,
+          "step": 1,
+          "default": 100
+        },
+        {
+          "id": "b",
+          "label": "Fim da faixa B",
+          "type": "int",
+          "min": 0,
+          "max": 255,
+          "step": 1,
+          "default": 180
+        },
+        {
+          "id": "preserve_background",
+          "label": "Preservar fundo",
+          "type": "bool",
+          "default": true,
+          "help": "Ligado: pixels fora de [A, B] ficam como estão. Desligado: pixels fora de [A, B] vão para 0."
+        }
+      ],
+      "constraints": [
+        {
+          "rule": "less_equal",
+          "params": [
+            "a",
+            "b"
+          ],
+          "message": "A deve ser menor ou igual a B."
+        }
+      ]
+    },
+    {
+      "id": "gaussian_blur",
+      "label": "Filtro de média gaussiana",
+      "category": "spatial",
+      "description": "Suavização por convolução com um kernel gaussiano.",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "kernel_size",
+          "label": "Tamanho da janela",
+          "type": "int",
+          "min": 3,
+          "max": 31,
+          "step": 2,
+          "odd": true,
+          "default": 5
+        },
+        {
+          "id": "sigma",
+          "label": "Desvio padrão σ",
+          "type": "float",
+          "min": 0.1,
+          "max": 20,
+          "step": 0.1,
+          "default": 1.0
+        }
+      ]
+    },
+    {
+      "id": "median_filter",
+      "label": "Filtro de mediana",
+      "category": "spatial",
+      "description": "Troca cada pixel pela mediana da vizinhança. Funciona bem contra ruído sal e pimenta.",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "kernel_size",
+          "label": "Tamanho da janela",
+          "type": "int",
+          "min": 3,
+          "max": 31,
+          "step": 2,
+          "odd": true,
+          "default": 3
+        }
+      ]
+    },
+    {
+      "id": "min_filter",
+      "label": "Filtro de mínimo",
+      "category": "spatial",
+      "description": "Troca cada pixel pelo mínimo da vizinhança (erosão). Remove ruído sal.",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "kernel_size",
+          "label": "Tamanho da janela",
+          "type": "int",
+          "min": 3,
+          "max": 31,
+          "step": 2,
+          "odd": true,
+          "default": 3
+        }
+      ]
+    },
+    {
+      "id": "max_filter",
+      "label": "Filtro de máximo",
+      "category": "spatial",
+      "description": "Troca cada pixel pelo máximo da vizinhança (dilatação). Remove ruído pimenta.",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "kernel_size",
+          "label": "Tamanho da janela",
+          "type": "int",
+          "min": 3,
+          "max": 31,
+          "step": 2,
+          "odd": true,
+          "default": 3
+        }
+      ]
+    },
+    {
+      "id": "unsharp_mask",
+      "label": "Máscara de aguçamento",
+      "category": "spatial",
+      "description": "g = f + k · (f − f_borrada). k = 1: máscara de nitidez; k > 1: high-boost.",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "kernel_size",
+          "label": "Tamanho da janela",
+          "type": "int",
+          "min": 3,
+          "max": 31,
+          "step": 2,
+          "odd": true,
+          "default": 5
+        },
+        {
+          "id": "gain",
+          "label": "Ganho k",
+          "type": "float",
+          "min": 0,
+          "max": 10,
+          "step": 0.1,
+          "default": 1.0
+        }
+      ]
+    },
+    {
+      "id": "laplacian_sharpen",
+      "label": "Realce por Laplaciano",
+      "category": "spatial",
+      "description": "Realce g = f − c · ∇²f. Mostra a imagem realçada e o Laplaciano ajustado.",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "kernel_size",
+          "label": "Tamanho da janela",
+          "type": "int",
+          "min": 3,
+          "max": 15,
+          "step": 2,
+          "odd": true,
+          "default": 3
+        }
+      ]
+    },
+    {
+      "id": "sobel",
+      "label": "Gradiente de Sobel",
+      "category": "spatial",
+      "description": "Magnitude do gradiente |Gx| + |Gy| (ou √(Gx² + Gy²)). Realça bordas.",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "kernel_size",
+          "label": "Tamanho da janela",
+          "type": "int",
+          "min": 3,
+          "max": 7,
+          "step": 2,
+          "odd": true,
+          "default": 3
+        }
+      ]
+    },
+    {
+      "id": "adaptive_median",
+      "label": "Filtro adaptativo de mediana",
+      "category": "spatial",
+      "description": "Mediana com janela que cresce de 3×3 até o tamanho máximo. Preserva detalhes.",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "max_window",
+          "label": "Tamanho máximo da janela",
+          "type": "int",
+          "min": 3,
+          "max": 21,
+          "step": 2,
+          "odd": true,
+          "default": 7
+        }
+      ]
+    },
+    {
+      "id": "gaussian_frequency_filter",
+      "label": "Filtro gaussiano (frequência)",
+      "category": "frequency",
+      "description": "Passa-baixa: H = e^(−D²/2D₀²). Passa-alta: 1 − H. Aplicado via DFT.",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "filter_type",
+          "label": "Tipo",
+          "type": "select",
+          "default": "lowpass",
+          "options": [
+            {
+              "value": "lowpass",
+              "label": "Passa-baixa"
+            },
+            {
+              "value": "highpass",
+              "label": "Passa-alta"
+            }
+          ]
+        },
+        {
+          "id": "cutoff",
+          "label": "Frequência de corte D₀",
+          "type": "float",
+          "min": 1,
+          "max": 500,
+          "step": 1,
+          "default": 30
+        }
+      ]
+    },
+    {
+      "id": "butterworth_filter",
+      "label": "Filtro de Butterworth (frequência)",
+      "category": "frequency",
+      "description": "Passa-baixa: H = 1 / (1 + (D/D₀)^2n). Passa-alta: H = 1 / (1 + (D₀/D)^2n).",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "filter_type",
+          "label": "Tipo",
+          "type": "select",
+          "default": "lowpass",
+          "options": [
+            {
+              "value": "lowpass",
+              "label": "Passa-baixa"
+            },
+            {
+              "value": "highpass",
+              "label": "Passa-alta"
+            }
+          ]
+        },
+        {
+          "id": "cutoff",
+          "label": "Frequência de corte D₀",
+          "type": "float",
+          "min": 1,
+          "max": 500,
+          "step": 1,
+          "default": 30
+        },
+        {
+          "id": "order",
+          "label": "Ordem n",
+          "type": "int",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "default": 2
+        }
+      ]
+    },
+    {
+      "id": "gaussian_noise",
+      "label": "Ruído gaussiano aditivo",
+      "category": "noise",
+      "description": "Soma a cada pixel uma amostra de ruído gaussiano, com saturação em [0, 255].",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "intensity",
+          "label": "Intensidade (desvio padrão σ)",
+          "type": "float",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 20
+        },
+        {
+          "id": "distribution",
+          "label": "Distribuição (média μ)",
+          "type": "float",
+          "min": -100,
+          "max": 100,
+          "step": 1,
+          "default": 0
+        }
+      ]
+    },
+    {
+      "id": "salt_pepper_noise",
+      "label": "Ruído sal / pimenta",
+      "category": "noise",
+      "description": "Troca pixels por 255 (sal) e/ou 0 (pimenta).",
+      "modes": [
+        "gray",
+        "rgb"
+      ],
+      "params": [
+        {
+          "id": "noise_type",
+          "label": "Tipo",
+          "type": "select",
+          "default": "salt_and_pepper",
+          "options": [
+            {
+              "value": "salt",
+              "label": "Sal"
+            },
+            {
+              "value": "pepper",
+              "label": "Pimenta"
+            },
+            {
+              "value": "salt_and_pepper",
+              "label": "Sal e pimenta"
+            }
+          ]
+        },
+        {
+          "id": "salt_probability",
+          "label": "Probabilidade de sal Pa",
+          "type": "float",
+          "min": 0,
+          "max": 0.5,
+          "step": 0.005,
+          "default": 0.025,
+          "visible_if": {
+            "param": "noise_type",
+            "equals": "salt_and_pepper"
+          }
+        },
+        {
+          "id": "pepper_probability",
+          "label": "Probabilidade de pimenta Pb",
+          "type": "float",
+          "min": 0,
+          "max": 0.5,
+          "step": 0.005,
+          "default": 0.025,
+          "visible_if": {
+            "param": "noise_type",
+            "equals": "salt_and_pepper"
+          }
+        }
+      ]
+    }
+  ]
+}

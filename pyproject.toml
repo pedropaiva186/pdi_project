@@ -8,9 +8,38 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "pydantic>=2.7",
+    "numpy>=2.0",
+    "pillow>=10.4",
+    "python-multipart>=0.0.9",
 ]
 
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+# O projeto não é um pacote instalável: o código fica em backend/app e o front em frontend/.
+package-mode = false
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8"
+httpx = ">=0.27"
+poethepoet = ">=0.49.0"
+
+# Tarefas: poetry run poe <tarefa>
+[tool.poe.tasks.backend]
+help = "Sobe a API FastAPI com recarga automática em http://127.0.0.1:8000"
+cmd = "python backend/run.py"
+
+[tool.poe.tasks.frontend]
+help = "Sobe o frontend Vite (npm run dev) em frontend/"
+cwd = "frontend"
+cmd = "npm run dev"
+
+[tool.poe.tasks.dev]
+help = "Sobe backend e frontend juntos; Ctrl+C encerra os dois"
+parallel = ["backend", "frontend"]

@@ -1,0 +1,113 @@
+.panel {
+  min-height: 0;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+}
+
+.empty {
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.sectionTitle {
+  margin-bottom: var(--space-2);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.histGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-4);
+}
+
+.histCard {
+  padding: var(--space-2);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.histLabel {
+  margin-bottom: var(--space-1);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.auxGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-3);
+}
+
+.auxCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.auxButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 160px;
+  padding: 0;
+  overflow: hidden;
+  cursor: zoom-in;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.auxImage {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+}
+
+.auxLabel {
+  font-size: 12px;
+  color: var(--text-2);
+  text-align: center;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table th,
+.table td {
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.table th {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+.metricValue {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

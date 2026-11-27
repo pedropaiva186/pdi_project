@@ -1,0 +1,30 @@
+.tablist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.tab {
+  padding: 3px 10px;
+  font-size: 12px;
+  color: var(--text-2);
+  cursor: pointer;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.tab:hover {
+  border-color: #cfd3d9;
+}
+
+.tabActive {
+  color: #ffffff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.tabActive:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
